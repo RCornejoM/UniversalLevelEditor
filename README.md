@@ -14,7 +14,6 @@ A minimal OpenGL + ImGui-based level editor for tile-based games, built for edit
 
 - C++ compiler (supporting C++11 or higher)
 - OpenGL, GLUT, GLEW
-- [Dear ImGui](https://github.com/ocornut/imgui)
 
 ## Build Instructions
 
@@ -40,12 +39,6 @@ Here’s an example `config.json`:
     "tileset_total": 640
 }
 ```
-
-## Controls
-
-- Select a tile in the tileset window.
-- Click on the tilemap to place the selected tile.
-- Use ImGui checkboxes to flip tiles horizontally or vertically.
 
 ## License
 
