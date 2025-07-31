@@ -28,7 +28,6 @@ Here’s an example `config.json`:
 
 ```json
 {
-{
     "map_filename": "./Roms/donkey-kong-country.sfc",
     "map_rows": 16,
     "map_cols": 1344,
