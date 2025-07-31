@@ -5,6 +5,10 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
+#define JSON_GET_OR(j, key, var, def) \
+    var = (j.contains(key) && !j[key].is_null()) ? j[key].get<decltype(var)>() : def;
+
+
 void LoadConfig(const std::string& filename);
 void ApplyConfig();
 
@@ -30,15 +34,16 @@ struct EditorConfig {
 extern EditorConfig config;
 
 // Add this to enable automatic parsing:
+
 inline void from_json(const nlohmann::json& j, EditorConfig& c) {
-    j.at("tile_size").get_to(c.tileSize);
-    j.at("tileset_total").get_to(c.tilesetTotal);
-    j.at("map_rows").get_to(c.mapRows);
-    j.at("map_cols").get_to(c.mapCols);
-    j.at("tilemap_address").get_to(c.tilemapAddress);
-    j.at("top_to_bottom").get_to(c.topToBottom);
-    j.at("tileset_filename").get_to(c.tilesetFilename);
-    j.at("map_filename").get_to(c.mapFilename);
+    JSON_GET_OR(j, "tile_size",        c.tileSize,       8);
+    JSON_GET_OR(j, "tileset_total",    c.tilesetTotal,   0);
+    JSON_GET_OR(j, "map_rows",         c.mapRows,        0);
+    JSON_GET_OR(j, "map_cols",         c.mapCols,        0);
+    JSON_GET_OR(j, "tilemap_address",  c.tilemapAddress, 0u);
+    JSON_GET_OR(j, "top_to_bottom",    c.topToBottom,    false);
+    JSON_GET_OR(j, "tileset_filename", c.tilesetFilename, std::string{});
+    JSON_GET_OR(j, "map_filename",     c.mapFilename,    std::string{});
 }
 
 inline void to_json(json& j, const EditorConfig& c) {

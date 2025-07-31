@@ -1,5 +1,6 @@
 #include "tilemap.h"
 #include <iostream>
+#include <filesystem>
 
 void Tilemap::resize(int rows, int cols) {
     data.resize(rows);
@@ -13,35 +14,59 @@ void Tilemap::resize(int rows, int cols) {
 }
 
 Tile Tilemap::get(int row, int col) const {
+    if (row < 0 || row >= mapRows || col < 0 || col >= mapCols) {
+        std::cerr << "[get] Out-of-bounds access at (" << row << ", " << col << ")\n";
+        return Tile{0, false, false};  // default tile
+    }
     return data[row][col];
 }
 
 void Tilemap::set(int row, int col, Tile tile) {
+    if (row < 0 || row >= mapRows || col < 0 || col >= mapCols) {
+        std::cerr << "[set] Out-of-bounds access at (" << row << ", " << col << ")\n";
+        return;
+    }
     data[row][col] = tile;
 }
 
- void Tilemap::load(const std::string& filename, uint32_t address, int rows, int cols, bool topToBottom) {
+bool Tilemap::load(const std::string& filename, uint32_t address, int rows, int cols, bool topToBottom) {
     this->filename = filename;
     this->address = address;
-    resize(rows, cols);
-    std::ifstream file(filename, std::ios::binary);
-    if (!file) {
-        std::cerr << "Could not open " << filename << "!\n";
-        return;
+    this->topToBottom = topToBottom;
+
+    if (!std::filesystem::exists(filename)) {
+        std::cerr << "[load] File does not exist: " << filename << "\n";
+        return false;
     }
 
+    std::ifstream file(filename, std::ios::binary);
+    if (!file) {
+        std::cerr << "[load] Failed to open file: " << filename << "\n";
+        return false;
+    }
+
+    resize(rows, cols);
     file.seekg(address, std::ios::beg);
+
     if (topToBottom)
         loadTopToBottom(file);
     else
         loadLeftToRight(file);
+
+    std::cout << "[load] Tilemap loaded successfully.\n";
+    return true;
 }
 
-void Tilemap::save() {
+bool Tilemap::save() {
+    if (!loaded) {
+        std::cerr << "[save] Tilemap not loaded; cannot save.\n";
+        return false;
+    }
+
     std::fstream file(filename, std::ios::in | std::ios::out | std::ios::binary);
     if (!file) {
-        std::cerr << "[Save] Could not open " << filename << " for writing!\n";
-        return;
+        std::cerr << "[save] Could not open " << filename << " for writing.\n";
+        return false;
     }
 
     file.seekp(address, std::ios::beg);
@@ -49,6 +74,9 @@ void Tilemap::save() {
         saveTopToBottom(file);
     else
         saveLeftToRight(file);
+
+    std::cout << "[save] Tilemap saved successfully.\n";
+    return true;
 }
 
 void Tilemap::loadTopToBottom(std::ifstream& file) {

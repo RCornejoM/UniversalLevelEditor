@@ -12,7 +12,6 @@
 #include "gui.h"
 
 int main(int argc, char** argv) {
-    LoadConfig("Games/Template Game/template-game.config");
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
@@ -20,17 +19,19 @@ int main(int argc, char** argv) {
     glutCreateWindow("Tile Editor");
 
     glewInit();
-    tileset->load(config.tilesetFilename,config.tileSize);
-    tilemap->load(config.mapFilename,config.tilemapAddress, config.mapRows, config.mapCols,config.topToBottom);
 
-    Initialize();
-
-    // Setup ImGui
     ImGui::CreateContext();
     ImGui::StyleColorsDark();
     ImGui_ImplGLUT_Init();
     ImGui_ImplGLUT_InstallFuncs();
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    LoadConfig("Games/Template Game/template-game.config");
+
+    tileset->load(config.tilesetFilename,config.tileSize);
+    tilemap->load(config.mapFilename,config.tilemapAddress, config.mapRows, config.mapCols,config.topToBottom);
+
+    Initialize();
 
     glutDisplayFunc(Display);
     glutIdleFunc(glutPostRedisplay);

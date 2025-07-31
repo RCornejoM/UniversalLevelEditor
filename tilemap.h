@@ -37,8 +37,8 @@ class Tilemap {
 public:
     void resize(int rows, int cols);
 
-    void load(const std::string& filename, uint32_t address, int rows, int cols, bool topToBottom);
-    void save();
+    bool load(const std::string& filename, uint32_t address, int rows, int cols, bool topToBottom);
+    bool save();
 
     void clear();
 

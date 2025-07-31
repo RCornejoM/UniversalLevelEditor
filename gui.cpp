@@ -82,8 +82,9 @@ void RenderTilemapWindow(std::string name) {
 
     // Tilemap related buttonssss
     if (ImGui::Button("Load Tilemap")) {
-        tilemap->load(config.mapFilename,config.tilemapAddress,config.mapRows,config.mapCols,config.topToBottom);
+        tilemap->load(config.mapFilename, config.tilemapAddress, config.mapRows, config.mapCols, config.topToBottom);
     }
+
     if (ImGui::Button("Clear Map")) {
         // Clear tilemap vector properly
         tilemap->clear();
