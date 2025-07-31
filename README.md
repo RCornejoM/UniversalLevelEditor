@@ -6,11 +6,9 @@ A minimal OpenGL + ImGui-based level editor for tile-based games, built for edit
 
 - Loads tilesets from image files.
 - Loads tilemaps from game ROMs.
-- Supports horizontal and vertical flipping of tiles.
-- Customizable tile size.
 - Configurable direction of tilemap load (top-to-bottom or left-to-right).
+- Supports horizontal and vertical flipping of tiles.
 - Copy & paste.
-- New games can be added from the editor.
 
 ## Requirements
 
@@ -21,9 +19,8 @@ A minimal OpenGL + ImGui-based level editor for tile-based games, built for edit
 ## Build Instructions
 
 ```bash
-make        # Builds the default image viewer
-make new    # Builds the tilemap editor
-make clean  # Cleans build artifacts
+make clean
+make
 ```
 
 ## Config Format
@@ -32,16 +29,15 @@ Here’s an example `config.json`:
 
 ```json
 {
-    "map_filename": "game.sfc",
-    "tileset_filename": "Tilesets/tileset.png",
-    "tile_size": 64,
-    "tileset_total": 640,
-    "map_rows": 32,
-    "map_cols": 64,
-    "screen_width_tiles": 16,
-    "screen_height_tiles": 16,
-    "map_address": "0x12345",
-    "top_to_bottom": true
+{
+    "map_filename": "./Roms/donkey-kong-country.sfc",
+    "map_rows": 16,
+    "map_cols": 1344,
+    "tile_size": 32,
+    "tilemap_address": 1638400,
+    "tileset_filename": "./Games/Donkey Kong Country/donkey-kong-country-tileset.png",
+    "top_to_bottom": true,
+    "tileset_total": 640
 }
 ```
 
