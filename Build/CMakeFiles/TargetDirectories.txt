@@ -1,3 +1,0 @@
-/home/rodrigo/Desktop/Projects/UniversalLevelEditor/Build/CMakeFiles/UniversalLevelEditor.dir
-/home/rodrigo/Desktop/Projects/UniversalLevelEditor/Build/CMakeFiles/edit_cache.dir
-/home/rodrigo/Desktop/Projects/UniversalLevelEditor/Build/CMakeFiles/rebuild_cache.dir
