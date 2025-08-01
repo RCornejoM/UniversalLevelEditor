@@ -1,0 +1,10 @@
+{
+  "map_filename": "../games/metal-warriors.sfc",
+  "map_rows": 12,
+  "map_cols": 17,
+  "tile_size": 64,
+  "tilemap_address": 601529,
+  "top_to_bottom": false,
+  "tileset_filename": "../assets/tilesets/metal-warriors-tileset.png",
+  "tileset_total": 512
+}

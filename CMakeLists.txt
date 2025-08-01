@@ -1,47 +1,49 @@
 cmake_minimum_required(VERSION 3.10)
 project(UniversalLevelEditor)
 
-# C++17 standard
+# Set CMake policies
+cmake_policy(SET CMP0072 NEW)  # Use GLVND if available
+set(OpenGL_GL_PREFERENCE "GLVND")
+
+# C++ Standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set output directory to project root
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+# Collect source files
+file(GLOB_RECURSE PROJECT_SRC CONFIGURE_DEPENDS src/*.cpp)
 
-# Define sources
+# ImGui sources
 set(IMGUI_SRC
-    imgui/imgui.cpp
-    imgui/imgui_draw.cpp
-    imgui/imgui_tables.cpp
-    imgui/imgui_widgets.cpp
-    imgui/imgui_impl_opengl3.cpp
-    imgui/imgui_impl_glut.cpp
+    external/imgui/imgui.cpp
+    external/imgui/imgui_draw.cpp
+    external/imgui/imgui_tables.cpp
+    external/imgui/imgui_widgets.cpp
+    external/imgui/backends/imgui_impl_opengl3.cpp
+    external/imgui/backends/imgui_impl_glut.cpp
 )
 
-set(PROJECT_SRC
-    main.cpp
-    shaders.cpp
-    gui.cpp
-    tilemap.cpp
-    stamp.cpp
-    tileset.cpp
-    globals.cpp
-    config.cpp
-)
-
+# Define the executable
 add_executable(${PROJECT_NAME} ${PROJECT_SRC} ${IMGUI_SRC})
 
-# Include ImGui headers
-target_include_directories(${PROJECT_NAME} PRIVATE imgui)
+# Include directories
+target_include_directories(${PROJECT_NAME} PRIVATE
+    src
+    src/engine
+    src/graphics
+    src/gui
+    external
+    external/imgui
+    external/imgui/backends
+)
 
 # Platform-specific dependencies
+find_package(OpenGL REQUIRED)
+
 if(WIN32)
-    find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
     find_package(GLUT REQUIRED)
 
     target_include_directories(${PROJECT_NAME} PRIVATE
-        ${OPENGL_INCLUDE_DIR}
         ${GLEW_INCLUDE_DIRS}
         ${GLUT_INCLUDE_DIR}
     )
@@ -51,12 +53,24 @@ if(WIN32)
         ${GLEW_LIBRARIES}
         ${GLUT_LIBRARIES}
     )
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GLEW REQUIRED glew)
+    pkg_check_modules(GLUT REQUIRED glut)
 
-elseif(UNIX)
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${GLEW_INCLUDE_DIRS}
+        ${GLUT_INCLUDE_DIRS}
+    )
+
+    target_link_directories(${PROJECT_NAME} PRIVATE
+        ${GLEW_LIBRARY_DIRS}
+        ${GLUT_LIBRARY_DIRS}
+    )
+
     target_link_libraries(${PROJECT_NAME}
-        GLEW
-        GL
-        GLU
-        glut
+        ${OPENGL_gl_LIBRARY}
+        ${GLEW_LIBRARIES}
+        ${GLUT_LIBRARIES}
     )
 endif()

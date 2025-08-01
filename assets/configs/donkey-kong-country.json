@@ -1,0 +1,10 @@
+{
+  "map_filename": "../games/donkey-kong-country.sfc",
+  "map_rows": 16,
+  "map_cols": 1344,
+  "tile_size": 32,
+  "tilemap_address": 1638400,
+  "top_to_bottom": true,
+  "tileset_filename": "../assets/tilesets/donkey-kong-country.png",
+  "tileset_total": 640
+}

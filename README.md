@@ -1,51 +1,76 @@
-# UniversalLevelEditor
+# Universal Level Editor
 
-A minimal OpenGL + ImGui-based level editor for tile-based games, built for editing SNES games.
+A minimal OpenGL + ImGui-based tilemap editor built for editing SNES games.
 
 ## Features
 
-- Loads tilesets from image files.
-- Loads tilemaps from game ROMs.
-- Configurable direction of tilemap load (top-to-bottom or left-to-right).
-- Supports horizontal and vertical flipping of tiles.
-- Copy & paste.
+- Load tilesets from image files
+- Load tilemaps from `.sfc` ROMs
+- Configurable tilemap load direction
+- Horizontal/vertical flipping
+- Stamp copy & paste
 
 ## Requirements
 
-- C++ compiler (supporting C++11 or higher)
-- OpenGL, GLUT, GLEW
+- C++17 compiler
+- CMake ≥ 3.10
+- OpenGL
+- GLEW
+- freeglut
+- pkg-config (Linux)
+
+### Ubuntu/Debian
+
+```bash
+sudo apt install build-essential cmake libglew-dev freeglut3-dev libgl1-mesa-dev pkg-config
+```
+
+### Windows (MSYS2)
+
+```bash
+pacman -Syu
+pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-glew mingw-w64-x86_64-freeglut
+```
 
 ## Build Instructions
 
 ```bash
-make clean
-make
+git clone https://github.com/RCornejoM/UniversalLevelEditor.git
+cd UniversalLevelEditor
+mkdir build && cd build
+cmake ..
+cmake --build .
 ```
+
+## Run
+
+```bash
+./UniversalLevelEditor
+```
+
 
 ## Config Format
 
-Here’s an example `config.json`:
+Example: assets/configs/donkey-kong-country.json
 
 ```json
 {
-    "map_filename": "./Roms/donkey-kong-country.sfc",
-    "map_rows": 16,
-    "map_cols": 1344,
-    "tile_size": 32,
-    "tilemap_address": 1638400,
-    "tileset_filename": "./Games/Donkey Kong Country/donkey-kong-country-tileset.png",
-    "top_to_bottom": true,
-    "tileset_total": 640
+  "map_filename": "./roms/donkey-kong-country.sfc",
+  "map_rows": 16,
+  "map_cols": 1344,
+  "tile_size": 32,
+  "tilemap_address": 1638400,
+  "tileset_filename": "./assets/tilesets/donkey-kong-country.png",
+  "top_to_bottom": true,
+  "tileset_total": 640
 }
 ```
 
 ## License
 
-No license
+No license.
 
 ---
-
-Contributions welcome!
 
 ## ⚠️ Legal Notice
 This tool is intended for use **only with legally obtained game copies**.
